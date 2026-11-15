@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://main.gd" id="1_main"]
+[ext_resource type="PackedScene" path="res://platform.tscn" id="2_platform"]
+[ext_resource type="PackedScene" path="res://star.tscn" id="3_star"]
+[ext_resource type="PackedScene" path="res://player.tscn" id="4_player"]
+[ext_resource type="Texture2D" path="res://assets/bg/sky_loop.png" id="5_sky"]
+[ext_resource type="Texture2D" path="res://assets/tiles/plat_6_o.png" id="6_start"]
+[ext_resource type="Texture2D" path="res://assets/items/paw.png" id="7_paw"]
+
+[sub_resource type="RectangleShape2D" id="wall_shape"]
+size = Vector2(20, 3000)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+platform_scene = ExtResource("2_platform")
+star_scene = ExtResource("3_star")
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0)
+motion_mirroring = Vector2(4320, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("5_sky")
+centered = false
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Start" parent="Platforms" instance=ExtResource("2_platform")]
+position = Vector2(0, 440)
+tile = ExtResource("6_start")
+
+[node name="Stars" type="Node2D" parent="."]
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(10, 270)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("wall_shape")
+
+[node name="Paw" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(110, 530)
+texture = ExtResource("7_paw")
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(110, 438)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(480, 270)
+
+[node name="Text" type="Label" parent="Camera2D"]
+offset_left = -464.0
+offset_top = -262.0
+offset_right = 464.0
+offset_bottom = -222.0
+theme_override_colors/font_color = Color(1, 0.95, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0.18, 0.08, 0.3, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 28
+text = "Score: 0     Comebacks: 3"
